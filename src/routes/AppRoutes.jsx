@@ -6,53 +6,45 @@
 //
 // Defensa académica: centralizar el ruteo facilita el mantenimiento,
 // la auditoría de qué rutas existen y la implementación de funcionalidad
-// transversal (analytics, logging) en un único punto.
-//
-// Nota: este archivo importa componentes que se crearán en los bloques
-// siguientes. Mientras esos componentes no existan, comenta sus líneas
-// o usa placeholders simples para que el proyecto compile.
+// transversal en un único punto.
 // =====================================================================
 
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import PrivateRoute from './PrivateRoute';
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import PrivateRoute from "./PrivateRoute";
 
-// Páginas públicas (se implementan en Bloque 2)
-import LandingPage from '../pages/public/LandingPage';
+// Página pública
+import LandingPage from "../pages/public/LandingPage";
 
-// Páginas administrativas (se implementan en Bloques 3 y 4)
-import LoginPage from '../pages/admin/LoginPage';
-import TwoFactorPage from '../pages/admin/TwoFactorPage';
-import DashboardPage from '../pages/admin/DashboardPage';
-import ProjectsPage from '../pages/admin/ProjectsPage';
-import ProjectFormPage from '../pages/admin/ProjectFormPage';
+// Páginas administrativas
+import LoginPage from "../pages/admin/LoginPage";
+import TwoFactorPage from "../pages/admin/TwoFactorPage";
+import DashboardPage from "../pages/admin/DashboardPage";
+import ProjectsPage from "../pages/admin/ProjectsPage";
+import ProjectFormPage from "../pages/admin/ProjectFormPage";
+import GenericCrudPage from "../pages/admin/GenericCrudPage";
+import SiteConfigPage from "../pages/admin/SiteConfigPage";
 
 /**
- * Componente principal de rutas. Debe envolverse en AuthProvider
- * (en main.jsx) para que las rutas privadas funcionen.
+ * Componente principal de rutas.
+ * Debe envolverse en AuthProvider en main.jsx.
  */
 const AppRoutes = () => {
   return (
     <BrowserRouter>
       <Routes>
         {/* ============================================================
-            RUTAS PÚBLICAS
-            Accesibles sin autenticación. La landing page muestra el
-            contenido público del portafolio.
+            RUTA PÚBLICA
         ============================================================ */}
         <Route path="/" element={<LandingPage />} />
 
         {/* ============================================================
             RUTAS DE AUTENTICACIÓN
-            Login y 2FA son públicas en cuanto a acceso URL, pero
-            redirigen al dashboard si el usuario ya está autenticado.
         ============================================================ */}
         <Route path="/admin/login" element={<LoginPage />} />
         <Route path="/admin/verify-2fa" element={<TwoFactorPage />} />
 
         {/* ============================================================
-            RUTAS PRIVADAS — ADMIN
-            Cada ruta privada se envuelve en <PrivateRoute> para
-            verificar autenticación + 2FA antes de renderizar.
+            RUTAS PRIVADAS — DASHBOARD
         ============================================================ */}
         <Route
           path="/admin/dashboard"
@@ -63,6 +55,9 @@ const AppRoutes = () => {
           }
         />
 
+        {/* ============================================================
+            CRUD ESPECÍFICO DE PROYECTOS
+        ============================================================ */}
         <Route
           path="/admin/projects"
           element={
@@ -91,15 +86,39 @@ const AppRoutes = () => {
         />
 
         {/* ============================================================
-            RUTAS DE GESTIÓN DE OTRAS COLECCIONES
-            (Se irán agregando conforme se implementen los CRUDs)
+            CONFIGURACIÓN DEL SITIO
+            Usa documento fijo: siteConfig/main
         ============================================================ */}
-        {/* <Route path="/admin/technologies" element={<PrivateRoute><TechnologiesPage /></PrivateRoute>} /> */}
-        {/* <Route path="/admin/experiences" element={<PrivateRoute><ExperiencesPage /></PrivateRoute>} /> */}
-        {/* <Route path="/admin/education" element={<PrivateRoute><EducationPage /></PrivateRoute>} /> */}
+        <Route
+          path="/admin/site-config"
+          element={
+            <PrivateRoute>
+              <SiteConfigPage />
+            </PrivateRoute>
+          }
+        />
 
         {/* ============================================================
-            CATCH-ALL: redirección a la landing para rutas no definidas
+            CRUD GENÉRICO PARA COLECCIONES DEL PORTAFOLIO
+            Ejemplos:
+            /admin/technologies
+            /admin/education
+            /admin/experience
+            /admin/soft-skills
+            /admin/languages
+            /admin/certifications
+        ============================================================ */}
+        <Route
+          path="/admin/:moduleId"
+          element={
+            <PrivateRoute>
+              <GenericCrudPage />
+            </PrivateRoute>
+          }
+        />
+
+        {/* ============================================================
+            CATCH-ALL
         ============================================================ */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

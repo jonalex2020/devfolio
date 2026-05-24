@@ -10,50 +10,50 @@ const DashboardPage = () => {
       title: "Proyectos",
       description: "Crear, editar, eliminar y listar proyectos destacados.",
       path: "/admin/projects",
-      status: "CRUD inicial",
+      status: "CRUD activo",
     },
     {
       title: "Tecnologías",
       description: "Administrar categorías y tecnologías utilizadas.",
-      path: "#",
-      status: "Pendiente",
+      path: "/admin/technologies",
+      status: "CRUD activo",
     },
     {
       title: "Educación",
       description: "Gestionar formación académica y áreas de estudio.",
-      path: "#",
-      status: "Pendiente",
+      path: "/admin/education",
+      status: "CRUD activo",
     },
     {
       title: "Experiencia",
       description: "Administrar experiencia laboral y académica.",
-      path: "#",
-      status: "Pendiente",
+      path: "/admin/experience",
+      status: "CRUD activo",
     },
     {
       title: "Habilidades blandas",
       description: "Gestionar competencias personales del portafolio.",
-      path: "#",
-      status: "Pendiente",
+      path: "/admin/soft-skills",
+      status: "CRUD activo",
     },
     {
       title: "Idiomas",
       description: "Administrar idiomas y niveles de dominio.",
-      path: "#",
-      status: "Pendiente",
+      path: "/admin/languages",
+      status: "CRUD activo",
     },
     {
       title: "Certificaciones",
       description: "Gestionar cursos, constancias y certificaciones.",
-      path: "#",
-      status: "Pendiente",
+      path: "/admin/certifications",
+      status: "CRUD activo",
     },
     {
-      title: "Configuración del sitio",
-      description: "Actualizar datos personales y enlaces principales.",
-      path: "#",
-      status: "Pendiente",
-    },
+  title: "Configuración del sitio",
+  description: "Actualizar datos personales y enlaces principales.",
+  path: "/admin/site-config",
+  status: "CRUD activo",
+},
   ];
 
   const handleLogout = async () => {
@@ -85,7 +85,11 @@ const DashboardPage = () => {
                 Ver sitio público
               </Link>
 
-              <button type="button" onClick={handleLogout} className="btn-primary">
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="btn-primary"
+              >
                 Cerrar sesión
               </button>
             </div>
@@ -124,14 +128,13 @@ const DashboardPage = () => {
             </p>
 
             <h2 className="mt-4 text-2xl font-bold">
-              Módulo administrativo en construcción
+              Módulos administrativos activos
             </h2>
 
             <p className="mt-4 leading-7 text-text-secondary">
-              El sistema ya cuenta con autenticación mediante Firebase Auth,
-              verificación de segundo factor y rutas privadas protegidas. El
-              siguiente paso es implementar las operaciones CRUD sobre las
-              colecciones de Firestore.
+              El sistema cuenta con autenticación mediante Firebase Auth,
+              verificación de segundo factor, rutas privadas protegidas y
+              operaciones CRUD sobre las principales colecciones de Firestore.
             </p>
           </article>
         </div>
@@ -142,9 +145,7 @@ const DashboardPage = () => {
               Módulos
             </p>
 
-            <h2 className="text-3xl font-bold">
-              Administración de contenido
-            </h2>
+            <h2 className="text-3xl font-bold">Administración de contenido</h2>
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
@@ -156,7 +157,13 @@ const DashboardPage = () => {
                   <div className="flex items-start justify-between gap-4">
                     <h3 className="text-xl font-bold">{module.title}</h3>
 
-                    <span className="rounded-full bg-accent-blue/10 px-3 py-1 text-xs font-medium text-accent-blue">
+                    <span
+                      className={`rounded-full px-3 py-1 text-xs font-medium ${
+                        isAvailable
+                          ? "bg-accent-green/10 text-accent-green"
+                          : "bg-accent-blue/10 text-accent-blue"
+                      }`}
+                    >
                       {module.status}
                     </span>
                   </div>
