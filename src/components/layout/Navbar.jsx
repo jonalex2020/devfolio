@@ -1,4 +1,8 @@
+import { useEffect, useState } from "react";
+
 const Navbar = () => {
+  const [theme, setTheme] = useState("dark");
+
   const links = [
     { label: "Inicio", href: "#home" },
     { label: "Sobre mí", href: "#about" },
@@ -12,6 +16,37 @@ const Navbar = () => {
     { label: "GitHub", href: "#github" },
     { label: "Contacto", href: "#contact" },
   ];
+
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("devfolio-theme");
+
+    const preferredTheme =
+      storedTheme ||
+      (window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light");
+
+    setTheme(preferredTheme);
+
+    if (preferredTheme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const nextTheme = theme === "dark" ? "light" : "dark";
+
+    setTheme(nextTheme);
+    localStorage.setItem("devfolio-theme", nextTheme);
+
+    if (nextTheme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background-primary/80 backdrop-blur-xl">
@@ -32,9 +67,29 @@ const Navbar = () => {
           ))}
         </div>
 
-        <a href="#contact" className="btn-primary hidden md:inline-flex">
-          Contactar
-        </a>
+        <div className="hidden items-center gap-3 md:flex">
+          <button
+            type="button"
+            onClick={toggleTheme}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-background-secondary text-text-primary transition-all duration-200 hover:border-accent-blue hover:text-accent-blue"
+            aria-label={
+              theme === "dark"
+                ? "Cambiar a modo claro"
+                : "Cambiar a modo oscuro"
+            }
+            title={
+              theme === "dark"
+                ? "Cambiar a modo claro"
+                : "Cambiar a modo oscuro"
+            }
+          >
+            {theme === "dark" ? "☀️" : "🌙"}
+          </button>
+
+          <a href="#contact" className="btn-primary inline-flex">
+            Contactar
+          </a>
+        </div>
       </nav>
     </header>
   );

@@ -5,6 +5,38 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --background-primary: 248 250 252;
+    --background-secondary: 255 255 255;
+    --background-card: 241 245 249;
+
+    --text-primary: 15 23 42;
+    --text-secondary: 71 85 105;
+    --text-muted: 100 116 139;
+
+    --accent-blue: 14 165 233;
+    --accent-purple: 124 58 237;
+    --accent-green: 16 185 129;
+
+    --border-color: 226 232 240;
+  }
+
+  .dark {
+    --background-primary: 2 6 23;
+    --background-secondary: 15 23 42;
+    --background-card: 17 24 39;
+
+    --text-primary: 248 250 252;
+    --text-secondary: 203 213 225;
+    --text-muted: 148 163 184;
+
+    --accent-blue: 56 189 248;
+    --accent-purple: 167 139 250;
+    --accent-green: 52 211 153;
+
+    --border-color: 30 41 59;
+  }
+
   html {
     @apply scroll-smooth;
   }
@@ -26,7 +58,7 @@
   }
 
   .btn-primary {
-    @apply bg-accent-blue text-text-primary px-5 py-2.5 rounded-lg text-sm font-medium 
+    @apply bg-accent-blue text-white px-5 py-2.5 rounded-lg text-sm font-medium 
            hover:opacity-90 active:scale-95 transition-all duration-200;
   }
 
