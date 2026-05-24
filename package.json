@@ -10,17 +10,17 @@
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",
-    "vite": "latest",
-    "react": "latest",
-    "react-dom": "latest",
-    "react-router-dom": "latest",
     "firebase": "latest",
     "lucide-react": "latest",
-    "react-hot-toast": "latest"
+    "react": "latest",
+    "react-dom": "latest",
+    "react-hot-toast": "latest",
+    "react-router-dom": "^7.15.1",
+    "vite": "latest"
   },
   "devDependencies": {
-    "tailwindcss": "^3.4.17",
+    "autoprefixer": "latest",
     "postcss": "latest",
-    "autoprefixer": "latest"
+    "tailwindcss": "^3.4.17"
   }
 }

@@ -1,10 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import LandingPage from "./pages/public/LandingPage";
+
+import AppRoutes from "./routes/AppRoutes";
+import { AuthProvider } from "./context/AuthContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <LandingPage />
+    <AuthProvider>
+      <AppRoutes />
+    </AuthProvider>
   </React.StrictMode>
 );

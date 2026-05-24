@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginAdmin } from "../../services/auth.service";
 
-const LoginPage = () => {
+const AdminLoginPage = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -37,7 +37,8 @@ const LoginPage = () => {
       return;
     }
 
-    navigate("/admin/verify-2fa");
+    sessionStorage.setItem("admin_first_factor", "verified");
+    navigate("/admin/verify");
   };
 
   return (
@@ -116,12 +117,11 @@ const LoginPage = () => {
             </button>
           </form>
 
-          <div className="mt-6 flex items-center justify-between gap-4">
-            <a href="/" className="text-sm text-accent-blue hover:underline">
-              ← Volver al sitio
-            </a>
-
-            <span className="text-xs text-text-muted">Firebase Auth</span>
+          <div className="mt-6 rounded-lg border border-border bg-background-primary p-4">
+            <p className="text-sm leading-6 text-text-muted">
+              Este acceso utiliza Firebase Authentication como primer factor de
+              seguridad.
+            </p>
           </div>
         </div>
       </section>
@@ -129,4 +129,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default AdminLoginPage;
