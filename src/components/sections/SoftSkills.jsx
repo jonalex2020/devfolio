@@ -3,40 +3,65 @@ const SoftSkills = ({ data = [] }) => {
     {
       id: "adaptabilidad",
       title: "Adaptabilidad",
+      label: "Flexibilidad",
       description:
         "Capacidad para ajustarme a nuevos entornos, herramientas y necesidades del proyecto.",
     },
     {
       id: "trabajo-equipo",
       title: "Trabajo en equipo",
+      label: "Colaboración",
       description:
         "Disposición para colaborar, comunicar ideas y aportar de forma positiva dentro de un equipo.",
     },
     {
       id: "responsabilidad",
       title: "Responsabilidad",
+      label: "Compromiso",
       description:
         "Compromiso con el cumplimiento de tareas, tiempos y objetivos establecidos.",
     },
     {
       id: "aprendizaje-autodidacta",
       title: "Aprendizaje autodidacta",
+      label: "Autoaprendizaje",
       description:
         "Capacidad para investigar, practicar y adquirir nuevos conocimientos técnicos de forma constante.",
     },
     {
       id: "resolucion-problemas",
       title: "Resolución de problemas",
+      label: "Solución",
       description:
         "Enfoque analítico para identificar errores, buscar soluciones y mejorar procesos.",
     },
     {
       id: "comunicacion",
       title: "Comunicación",
+      label: "Comunicación",
       description:
         "Habilidad para expresar ideas con claridad y mantener una interacción efectiva en contextos académicos y profesionales.",
     },
   ];
+
+  const getSkillLabel = (item) => {
+    const value = `${item.id || ""} ${item.title || ""} ${
+      item.name || ""
+    }`.toLowerCase();
+
+    if (value.includes("adaptabilidad")) return "Flexibilidad";
+    if (value.includes("analítico") || value.includes("analitico"))
+      return "Análisis";
+    if (value.includes("responsabilidad")) return "Compromiso";
+    if (value.includes("equipo")) return "Colaboración";
+    if (value.includes("autodidacta") || value.includes("aprendizaje"))
+      return "Autoaprendizaje";
+    if (value.includes("problemas")) return "Solución";
+    if (value.includes("comunicacion") || value.includes("comunicación"))
+      return "Comunicación";
+
+    return item.label || "Habilidad";
+  };
 
   const skills = (Array.isArray(data) && data.length > 0
     ? data
@@ -44,6 +69,7 @@ const SoftSkills = ({ data = [] }) => {
   ).map((item, index) => ({
     id: item.id || `soft-skill-${index}`,
     title: item.title || item.name || item.label || item.skill || "Sin título",
+    label: item.label || getSkillLabel(item),
     description:
       item.description ||
       item.text ||
@@ -108,7 +134,7 @@ const SoftSkills = ({ data = [] }) => {
 
               <div className="relative">
                 <span className="rounded-full border border-border bg-background-primary px-3 py-1 text-xs font-medium text-accent-blue">
-                  Competencia
+                  {item.label}
                 </span>
 
                 <h3 className="mt-5 text-2xl font-bold text-text-primary">
