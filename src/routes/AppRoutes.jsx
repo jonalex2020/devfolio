@@ -12,8 +12,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 
-// Página pública
+// Páginas públicas
 import LandingPage from "../pages/public/LandingPage";
+import PresentationPage from "../pages/public/PresentationPage";
 
 // Páginas administrativas
 import LoginPage from "../pages/admin/LoginPage";
@@ -33,9 +34,10 @@ const AppRoutes = () => {
     <BrowserRouter>
       <Routes>
         {/* ============================================================
-            RUTA PÚBLICA
+            RUTAS PÚBLICAS
         ============================================================ */}
         <Route path="/" element={<LandingPage />} />
+        <Route path="/presentacion" element={<PresentationPage />} />
 
         {/* ============================================================
             RUTAS DE AUTENTICACIÓN
@@ -87,7 +89,6 @@ const AppRoutes = () => {
 
         {/* ============================================================
             CONFIGURACIÓN DEL SITIO
-            Usa documento fijo: siteConfig/main
         ============================================================ */}
         <Route
           path="/admin/site-config"
@@ -99,14 +100,7 @@ const AppRoutes = () => {
         />
 
         {/* ============================================================
-            CRUD GENÉRICO PARA COLECCIONES DEL PORTAFOLIO
-            Ejemplos:
-            /admin/technologies
-            /admin/education
-            /admin/experience
-            /admin/soft-skills
-            /admin/languages
-            /admin/certifications
+            CRUD GENÉRICO PARA COLECCIONES
         ============================================================ */}
         <Route
           path="/admin/:moduleId"

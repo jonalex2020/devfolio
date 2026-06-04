@@ -1,153 +1,172 @@
 import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+
+const navLinks = [
+  { label: "Inicio", href: "#home", type: "anchor" },
+  { label: "Sobre mí", href: "#about", type: "anchor" },
+  { label: "Educación", href: "#education", type: "anchor" },
+  { label: "Experiencia", href: "#experience", type: "anchor" },
+  { label: "Habilidades", href: "#soft-skills", type: "anchor" },
+  { label: "Idiomas", href: "#languages", type: "anchor" },
+  { label: "Formación", href: "#certifications", type: "anchor" },
+  { label: "Tecnologías", href: "#technologies", type: "anchor" },
+  { label: "Proyectos", href: "#projects", type: "anchor" },
+  { label: "GitHub", href: "#github", type: "anchor" },
+  { label: "Presentación", href: "/presentacion", type: "route" },
+  { label: "Contacto", href: "#contact", type: "anchor" },
+];
 
 const Navbar = () => {
-  const [theme, setTheme] = useState("dark");
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  const links = [
-    { label: "Inicio", href: "#home" },
-    { label: "Sobre mí", href: "#about" },
-    { label: "Educación", href: "#education" },
-    { label: "Experiencia", href: "#experience" },
-    { label: "Habilidades", href: "#soft-skills" },
-    { label: "Idiomas", href: "#languages" },
-    { label: "Formación", href: "#certifications" },
-    { label: "Tecnologías", href: "#technologies" },
-    { label: "Proyectos", href: "#projects" },
-    { label: "GitHub", href: "#github" },
-    { label: "Contacto", href: "#contact" },
-  ];
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [theme, setTheme] = useState(() => {
+    if (typeof window === "undefined") return "dark";
+
+    return localStorage.getItem("devfolio-theme") || "dark";
+  });
 
   useEffect(() => {
-    const storedTheme = localStorage.getItem("devfolio-theme");
+    const root = document.documentElement;
 
-    const preferredTheme =
-      storedTheme ||
-      (window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light");
-
-    setTheme(preferredTheme);
-
-    if (preferredTheme === "dark") {
-      document.documentElement.classList.add("dark");
+    if (theme === "dark") {
+      root.classList.add("dark");
     } else {
-      document.documentElement.classList.remove("dark");
+      root.classList.remove("dark");
     }
-  }, []);
+
+    localStorage.setItem("devfolio-theme", theme);
+  }, [theme]);
 
   const toggleTheme = () => {
-    const nextTheme = theme === "dark" ? "light" : "dark";
-
-    setTheme(nextTheme);
-    localStorage.setItem("devfolio-theme", nextTheme);
-
-    if (nextTheme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
+    setTheme((currentTheme) => (currentTheme === "dark" ? "light" : "dark"));
   };
 
   const closeMenu = () => {
     setIsMenuOpen(false);
   };
 
-  return (
-    <header className="sticky top-0 z-50 border-b border-border bg-background-primary/80 backdrop-blur-xl">
-      <nav className="container-app flex h-16 items-center justify-between">
-        <a
-          href="#home"
+  const handleAnchorNavigation = (href) => {
+    closeMenu();
+
+    if (location.pathname !== "/") {
+      navigate(`/${href}`);
+
+      setTimeout(() => {
+        const element = document.querySelector(href);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 250);
+
+      return;
+    }
+
+    const element = document.querySelector(href);
+
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
+  const renderNavLink = (link, isMobile = false) => {
+    const className = isMobile
+      ? "block rounded-xl px-4 py-3 text-base font-medium text-text-secondary transition-colors hover:bg-background-primary hover:text-accent-blue"
+      : "text-sm font-medium text-text-secondary transition-colors hover:text-accent-blue";
+
+    if (link.type === "route") {
+      return (
+        <Link
+          key={link.label}
+          to={link.href}
           onClick={closeMenu}
-          className="text-lg font-bold tracking-tight"
+          className={className}
+        >
+          {link.label}
+        </Link>
+      );
+    }
+
+    return (
+      <button
+        key={link.label}
+        type="button"
+        onClick={() => handleAnchorNavigation(link.href)}
+        className={`${className} text-left`}
+      >
+        {link.label}
+      </button>
+    );
+  };
+
+  return (
+    <header className="sticky top-0 z-50 border-b border-border bg-background-primary/95 backdrop-blur">
+      <nav className="container-app flex h-20 items-center justify-between gap-6">
+        <Link
+          to="/"
+          onClick={closeMenu}
+          className="text-xl font-bold tracking-tight text-text-primary"
         >
           <span className="text-accent-blue">Dev</span>Folio
-        </a>
+        </Link>
 
-        <div className="hidden items-center gap-4 lg:flex">
-          {links.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="text-sm text-text-secondary transition-colors hover:text-text-primary"
-            >
-              {link.label}
-            </a>
-          ))}
+        <div className="hidden items-center gap-6 xl:flex">
+          {navLinks.map((link) => renderNavLink(link))}
         </div>
 
-        <div className="hidden items-center gap-3 lg:flex">
+        <div className="hidden items-center gap-3 xl:flex">
           <button
             type="button"
             onClick={toggleTheme}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-background-secondary text-text-primary transition-all duration-200 hover:border-accent-blue hover:text-accent-blue"
-            aria-label={
-              theme === "dark"
-                ? "Cambiar a modo claro"
-                : "Cambiar a modo oscuro"
-            }
-            title={
-              theme === "dark"
-                ? "Cambiar a modo claro"
-                : "Cambiar a modo oscuro"
-            }
+            className="rounded-lg border border-border bg-background-secondary px-4 py-3 text-sm transition-colors hover:border-accent-blue"
+            aria-label="Cambiar tema"
           >
             {theme === "dark" ? "☀️" : "🌙"}
           </button>
 
-          <a href="#contact" className="btn-primary inline-flex">
+          <button
+            type="button"
+            onClick={() => handleAnchorNavigation("#contact")}
+            className="btn-primary"
+          >
             Contactar
-          </a>
+          </button>
         </div>
 
-        <div className="flex items-center gap-3 lg:hidden">
+        <div className="flex items-center gap-3 xl:hidden">
           <button
             type="button"
             onClick={toggleTheme}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-background-secondary text-text-primary transition-all duration-200 hover:border-accent-blue hover:text-accent-blue"
-            aria-label={
-              theme === "dark"
-                ? "Cambiar a modo claro"
-                : "Cambiar a modo oscuro"
-            }
+            className="rounded-lg border border-border bg-background-secondary px-4 py-3 text-sm transition-colors hover:border-accent-blue"
+            aria-label="Cambiar tema"
           >
             {theme === "dark" ? "☀️" : "🌙"}
           </button>
 
           <button
             type="button"
-            onClick={() => setIsMenuOpen((current) => !current)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-background-secondary text-text-primary transition-all duration-200 hover:border-accent-blue hover:text-accent-blue"
-            aria-label="Abrir menú de navegación"
+            onClick={() => setIsMenuOpen((currentValue) => !currentValue)}
+            className="rounded-lg border border-border bg-background-secondary px-4 py-3 text-sm font-medium text-text-primary transition-colors hover:border-accent-blue"
+            aria-label="Abrir menú"
           >
-            {isMenuOpen ? "✕" : "☰"}
+            {isMenuOpen ? "Cerrar" : "Menú"}
           </button>
         </div>
       </nav>
 
       {isMenuOpen && (
-        <div className="border-t border-border bg-background-primary/95 backdrop-blur-xl lg:hidden">
-          <div className="container-app py-4">
-            <div className="grid gap-2">
-              {links.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={closeMenu}
-                  className="rounded-xl border border-border bg-background-secondary px-4 py-3 text-sm font-medium text-text-secondary transition-colors hover:border-accent-blue hover:text-accent-blue"
-                >
-                  {link.label}
-                </a>
-              ))}
-            </div>
+        <div className="border-t border-border bg-background-secondary xl:hidden">
+          <div className="container-app space-y-2 py-4">
+            {navLinks.map((link) => renderNavLink(link, true))}
 
-            <a
-              href="#contact"
-              onClick={closeMenu}
-              className="btn-primary mt-4 inline-flex w-full justify-center"
+            <button
+              type="button"
+              onClick={() => handleAnchorNavigation("#contact")}
+              className="btn-primary mt-3 w-full justify-center"
             >
               Contactar
-            </a>
+            </button>
           </div>
         </div>
       )}
