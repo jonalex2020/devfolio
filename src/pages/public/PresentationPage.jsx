@@ -39,9 +39,6 @@ const PresentationPage = () => {
             </div>
 
             <div className="flex flex-wrap gap-3">
-              <a href={pptPath} download className="btn-primary">
-                Descargar PPTX
-              </a>
 
               <Link to="/" className="btn-secondary">
                 Volver al inicio
