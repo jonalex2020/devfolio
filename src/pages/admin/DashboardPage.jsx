@@ -72,7 +72,7 @@ const DashboardPage = () => {
               </p>
 
               <h1 className="text-4xl font-bold tracking-tight">
-                Panel administrativo
+                Panel Para Administracion
               </h1>
 
               <p className="mt-3 text-text-secondary">
