@@ -67,16 +67,8 @@ const PresentationPage = () => {
         </div>
 
         <div className="mt-6 rounded-2xl border border-border bg-background-secondary p-5">
-          <h2 className="text-xl font-bold">Nota técnica</h2>
-
-          <p className="mt-3 leading-7 text-text-secondary">
-            Si el documento visualizado no corresponde a las diapositivas de la
-            presentación técnica, se debe reemplazar el archivo PDF ubicado en{" "}
-            <span className="font-semibold text-text-primary">
-              public/docs/DevFolio-Presentacion.pdf
-            </span>{" "}
-            por el PDF exportado correctamente desde PowerPoint.
-          </p>
+          <h2 className="text-xl font-bold">Derechos reservados</h2>
+          
         </div>
       </section>
     </main>
