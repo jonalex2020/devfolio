@@ -32,22 +32,8 @@ const PresentationPage = () => {
             </div>
 
             <div className="flex flex-wrap gap-3">
-              <a
-                href={pdfPath}
-                target="_blank"
-                rel="noreferrer"
-                className="btn-primary"
-              >
-                Abrir PDF
-              </a>
+   
 
-              <a href={pdfPath} download className="btn-secondary">
-                Descargar PDF
-              </a>
-
-              <a href={pptPath} download className="btn-secondary">
-                Descargar PPTX
-              </a>
 
               <Link to="/" className="btn-secondary">
                 Volver al inicio
